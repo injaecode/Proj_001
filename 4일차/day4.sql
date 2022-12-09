@@ -77,9 +77,17 @@ values( 30, 'abc');
 
 commit;
 
+-- 컬럼 미선택 시 암시적으로 null이 들어감
+insert into dept (dno , dname)
+values (30,'abc');
+
+--명시적으로 NULL 넣기 컬럼을 명시하지 않았기 때문에 순서대로 값을 넣어야 함.
+insert into dept
+values(40,'bcd',null);
+
 --회원 정보를 저장하는 테이블 생성
-create table member01 (
-id varchar2(50) not null primary key, 
+create table member1 (
+idx varchar2(50) not null primary key, --파란 음영 반영되는 변수 이름은 변경하는 것이 좋음
 pass varchar2(50) not null,
 addr varchar(100) null,
 phone varchar(30) null,
@@ -87,7 +95,9 @@ age number (3) not null,
 weight number (5, 2) not null
 );
 
-/* 제약 조건
+/* 제약 조건 : 데이터 무결성 확보를 위해 테이블의 컬럼에 부여
+            - 무결성 : 오류 없는 데이터, 원하는 데이터
+
     - Primary key : 테이블에서 하나만 존재할 수 있음 
         ㄴ 데이터 수정 및 삭제 시 조건을 사용하는 컬럼
         ㄴ primary key가 적용된 컬럼은 중복된 데이터 삽입 불가
@@ -100,7 +110,15 @@ weight number (5, 2) not null
     
     - check : 값을 넣을 때 체크해서 삽입
     - not null : 컬럼에 null 삽입 불가
+    - foreign key
 */
+
+
+select * from user_constraints; --현재 접속 계정에서 생성된 객체의 모든 제약 조건을 확인
+
+--원하는 테이블의 제약 조건 확인
+select *  from user_constraints
+where table_name = 'EMPLOYEE';
 
 desc member;
 
@@ -308,3 +326,5 @@ commit;
 --테이블 삭제
 drop table member01;
 rollback;
+
+
